@@ -11,6 +11,8 @@ frontend/dist
 frontend/android/
 frontend/ios/
 frontend/.capacitor/
+frontend/cypress/screenshots/
+frontend/cypress/videos/
 *.tsbuildinfo
 
 # Backend

@@ -62,11 +62,17 @@ function submit(): void {
 </script>
 
 <template>
-  <form class="form-card" novalidate @submit.prevent="submit">
+  <form
+    data-cy="reminder-form"
+    class="form-card"
+    novalidate
+    @submit.prevent="submit"
+  >
     <label class="field">
       <span>Title <b>*</b></span>
       <input
         v-model="form.title"
+        data-cy="reminder-title"
         maxlength="120"
         placeholder="e.g. Daily Standup"
         autocomplete="off"
@@ -77,6 +83,7 @@ function submit(): void {
       <span>Details <small>Optional</small></span>
       <textarea
         v-model="form.details"
+        data-cy="reminder-details"
         maxlength="1000"
         rows="4"
         placeholder="Add helpful context…"
@@ -86,17 +93,27 @@ function submit(): void {
     <div class="field-row">
       <label class="field">
         <span>Date</span>
-        <input v-model="form.date" type="date" required />
+        <input
+          v-model="form.date"
+          data-cy="reminder-date"
+          type="date"
+          required
+        />
       </label>
       <label class="field">
         <span>Time</span>
-        <input v-model="form.time" type="time" required />
+        <input
+          v-model="form.time"
+          data-cy="reminder-time"
+          type="time"
+          required
+        />
       </label>
     </div>
 
     <label class="field">
       <span>Schedule</span>
-      <select v-model="form.scheduleType">
+      <select v-model="form.scheduleType" data-cy="reminder-schedule">
         <option
           v-for="option in scheduleOptions"
           :key="option.value"
@@ -137,6 +154,7 @@ function submit(): void {
     </p>
     <button
       class="button button-primary button-block"
+      data-cy="reminder-submit"
       type="submit"
       :disabled="saving"
     >

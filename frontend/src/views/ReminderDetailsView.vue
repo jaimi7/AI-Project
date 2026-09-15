@@ -66,11 +66,18 @@ async function toggle() {
       <div class="action-row">
         <RouterLink
           :to="`/reminders/${reminder.id}/edit`"
+          data-cy="edit-reminder"
           class="button button-primary"
           >Edit</RouterLink
-        ><button class="button button-secondary" type="button" @click="toggle">
+        ><button
+          data-cy="toggle-reminder"
+          class="button button-secondary"
+          type="button"
+          @click="toggle"
+        >
           {{ reminder.enabled ? 'Disable' : 'Enable' }}</button
         ><button
+          data-cy="delete-reminder"
           class="button button-danger"
           type="button"
           :disabled="busy"

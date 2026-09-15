@@ -88,6 +88,26 @@ npm run format:check
 npm run build
 ```
 
+## Cypress end-to-end tests
+
+The Cypress suite exercises the full reminder journey against the real FastAPI API: create, view, edit, disable, and delete.
+
+After completing the normal frontend and backend installations, run both development servers and Cypress headlessly with one command:
+
+```bash
+cd frontend
+npm run e2e:full
+```
+
+To use Cypress's interactive runner instead, start FastAPI and Vite in separate terminals, then run:
+
+```bash
+cd frontend
+npm run e2e:open
+```
+
+Screenshots created by failed test runs and Cypress videos are ignored by Git.
+
 ## Build for Android or iOS
 
 Capacitor uses the Vite production output in `frontend/dist`.
