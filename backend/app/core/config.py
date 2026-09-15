@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    app_name: str = "AI Project API"
+    app_name: str = "Reminderly API"
     environment: str = "development"
     api_v1_prefix: str = "/api/v1"
     backend_cors_origins: list[AnyHttpUrl] = [AnyHttpUrl("http://localhost:3000")]

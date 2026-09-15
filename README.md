@@ -1,49 +1,75 @@
-# AI Project
+# Reminderly — Notification Automation
 
-A full-stack starter with a Nuxt 3 web/mobile frontend and a FastAPI backend.
+A mobile-first reminder application built with Vue 3, TypeScript, Pinia, Capacitor Local Notifications, and FastAPI.
 
-## Project structure
+## Features
+
+- Create, view, edit, delete, enable, and disable reminders
+- One-time, daily, weekday, weekend, weekly, monthly, and custom-day schedules
+- Contextual notification permission request when enabling a reminder or from Settings
+- Local-device scheduling with cancellation and rescheduling to prevent duplicates
+- Local-time and next-occurrence calculation
+- Loading, validation, empty, and API error states
+- Repository abstraction ready to replace in-memory storage with PostgreSQL
+
+## Structure
 
 ```text
 .
-├── frontend/   # Nuxt 3, TypeScript, Pinia, and Capacitor
-└── backend/    # FastAPI, Uvicorn, and Pydantic Settings
+├── frontend/
+│   └── src/
+│       ├── components/  # Reusable app shell, cards, and form
+│       ├── router/      # Vue Router configuration
+│       ├── services/    # API and device notification integrations
+│       ├── stores/      # Pinia reminder state
+│       ├── types/       # TypeScript reminder contracts
+│       ├── utils/       # Schedule and display calculations
+│       └── views/       # Home, list, create, edit, details, settings
+└── backend/
+    ├── app/
+    │   ├── api/         # FastAPI routes
+    │   ├── core/        # Environment configuration
+    │   ├── models/      # Domain models
+    │   ├── repositories/# Replaceable persistence layer
+    │   ├── schemas/     # Pydantic API contracts
+    │   └── services/    # Business logic
+    └── tests/
 ```
 
 ## Prerequisites
 
-- Node.js 20 or newer
-- npm 10 or newer
-- Python 3.11 or newer
-- Android Studio and/or Xcode when adding native Capacitor projects
+- Node.js 20.19+ or 22.12+
+- npm 10+
+- Python 3.11+
+- Android Studio and/or Xcode for native builds
 
-## Backend setup
+## Run the backend
 
 ```bash
 cd backend
 python3 -m venv .venv
 source .venv/bin/activate
-```
-
-On Windows PowerShell, activate the environment with:
-
-```powershell
-.venv\Scripts\Activate.ps1
-```
-
-Install dependencies, create the local environment file, and start the API:
-
-```bash
 pip install -r requirements.txt
 cp .env.example .env
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-The health endpoint is available at `http://localhost:8000/api/v1/health` and interactive API documentation at `http://localhost:8000/docs`.
+On Windows PowerShell, activate with `.venv\Scripts\Activate.ps1`.
 
-## Frontend setup
+- API: `http://localhost:8000/api/v1`
+- Health: `http://localhost:8000/api/v1/health`
+- OpenAPI docs: `http://localhost:8000/docs`
 
-In another terminal:
+Run backend tests with:
+
+```bash
+cd backend
+.venv/bin/pytest -q
+```
+
+The MVP uses an in-memory repository, so reminders reset when the API restarts. Implement the existing `ReminderRepository` protocol with PostgreSQL when persistent storage is added.
+
+## Run the frontend
 
 ```bash
 cd frontend
@@ -52,33 +78,37 @@ cp .env.example .env
 npm run dev
 ```
 
-Open `http://localhost:3000`. The home page calls the backend health endpoint.
+Open `http://localhost:3000`. Keep the FastAPI server running for reminder CRUD operations.
 
-Useful checks:
+Quality checks:
 
 ```bash
 npm run lint
+npm run format:check
 npm run build
-npm run generate
 ```
 
-## Capacitor setup
+## Build for Android or iOS
 
-Capacitor is configured to use Nuxt's generated static output in `.output/public`. Generate the frontend before synchronizing native projects:
+Capacitor uses the Vite production output in `frontend/dist`.
 
 ```bash
 cd frontend
-npm run generate
+npm run build
 npx cap add android   # first-time Android setup
 npx cap add ios       # first-time iOS setup; requires macOS
 npm run cap:sync
 ```
 
-The generated `android` and `ios` directories are intentionally ignored until the team decides to version native platform projects. Use `npm run cap:android` or `npm run cap:ios` to open an existing native project.
+Open an initialized native project with `npm run cap:android` or `npm run cap:ios`.
+
+Local Notifications run only on a native Android/iOS build. The web app supports the full CRUD flow but intentionally does not request browser notification permission. For Android 13+ and iOS, the app requests permission when a user first creates/enables a reminder or explicitly enables notifications in Settings.
 
 ## Environment variables
 
-Copy each `.env.example` to `.env`. Local `.env` files are ignored by Git.
+Copy each `.env.example` to `.env`; real environment files are ignored by Git.
 
-- `frontend/NUXT_PUBLIC_API_BASE_URL` controls the API URL used by the client.
-- `backend/APP_NAME`, `ENVIRONMENT`, `API_V1_PREFIX`, and `BACKEND_CORS_ORIGINS` configure the API.
+- `frontend/VITE_API_BASE_URL` sets the backend URL.
+- `backend/APP_NAME`, `ENVIRONMENT`, `API_V1_PREFIX`, and `BACKEND_CORS_ORIGINS` configure FastAPI.
+
+For a physical device, set `VITE_API_BASE_URL` to a backend URL reachable from the device—not `localhost`.

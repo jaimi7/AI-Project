@@ -2,8 +2,8 @@ import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
   appId: 'com.jaimi.aiproject',
-  appName: 'AI Project',
-  webDir: '.output/public',
+  appName: 'Reminderly',
+  webDir: 'dist',
 }
 
 export default config

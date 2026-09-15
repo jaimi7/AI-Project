@@ -1,5 +1,4 @@
-.nuxt
-.output
+dist
 node_modules
 android
 ios
