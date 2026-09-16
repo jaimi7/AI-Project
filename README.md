@@ -88,6 +88,44 @@ npm run format:check
 npm run build
 ```
 
+## Docker
+
+The production-style stack builds the Vue application, serves it through Nginx, proxies `/api` requests to FastAPI, and runs the API with multiple Uvicorn workers.
+
+```bash
+cp .env.docker.example .env
+docker compose up --build
+```
+
+Open:
+
+- Frontend: `http://localhost:3000`
+- Backend: `http://localhost:8000`
+- API documentation: `http://localhost:8000/docs`
+
+Stop and remove the containers with:
+
+```bash
+docker compose down
+```
+
+For development with Vue and FastAPI hot reload, use the standalone development configuration:
+
+```bash
+docker compose -f compose.dev.yaml up --build
+```
+
+The development configuration mounts both source directories and keeps frontend dependencies in a named Docker volume.
+
+Run the full Cypress flow inside Docker against the production containers with:
+
+```bash
+docker compose --profile e2e up --build --abort-on-container-exit --exit-code-from cypress
+docker compose --profile e2e down
+```
+
+Override `FRONTEND_PORT`, `BACKEND_PORT`, `APP_NAME`, or `ENVIRONMENT` in the root `.env` file when necessary. Docker health checks prevent the frontend and Cypress services from starting before their dependencies are ready.
+
 ## Cypress end-to-end tests
 
 The Cypress suite exercises the full reminder journey against the real FastAPI API: create, view, edit, disable, and delete.
