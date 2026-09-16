@@ -1,6 +1,20 @@
-# AI Review Assistant
+# ReviewMate — AI Review Assistant
 
-Full-stack starter for a mobile-first AI review assistant. The frontend uses Nuxt, Vue, TypeScript, Capacitor, and the Capacitor Community SQLite plugin. The backend uses FastAPI. Database initialization and AI-powered review generation can be added in the next feature phase.
+Local-first mobile review assistant built with Nuxt, Vue, TypeScript, Pinia, Capacitor, SQLite, and FastAPI.
+
+## Features
+
+- Generate honest reviews from a name, rating, experience notes, and keywords
+- Optimize review length, grammar, tone, and constructive feedback
+- Edit and explicitly approve final text
+- Scan an HTTPS review-page QR code or enter its URL manually
+- Copy an approved review and open its destination page for manual posting
+- Save, search, filter, edit, and delete local review history
+- Use SQLite on Android/iOS and local storage during web development
+- Connect to an OpenAI-compatible provider without exposing its key in the app
+- Run Cypress E2E tests locally or through Docker Compose
+
+The app never submits a review automatically. The user approves the content and posts it personally.
 
 ## Project structure
 
@@ -35,6 +49,17 @@ The API is available at `http://localhost:8000`. Check it with:
 curl http://localhost:8000/api/health
 ```
 
+The default `AI_PROVIDER=mock` works without an API key. To use a real OpenAI-compatible provider, update `backend/.env`:
+
+```dotenv
+AI_PROVIDER=openai
+AI_API_KEY=your_api_key
+AI_API_BASE_URL=https://api.openai.com/v1
+AI_MODEL=your_supported_model
+```
+
+The API key remains on the backend and is never bundled into the mobile application.
+
 ## Frontend setup
 
 In a second terminal:
@@ -46,7 +71,7 @@ cp .env.example .env
 npm run dev
 ```
 
-Open `http://localhost:3000`. The page calls the FastAPI health-check endpoint and displays the connection status.
+Open `http://localhost:3000` to create, improve, approve, and manage reviews.
 
 ## Production builds
 
@@ -60,7 +85,7 @@ npm run build
 
 ## End-to-end tests
 
-Cypress covers the frontend health-check flow with successful and unavailable API responses.
+Cypress covers review generation, approval, local history, and form validation.
 
 Start the Nuxt application:
 
@@ -135,6 +160,8 @@ npm run cap:open:ios
 
 The generated `android/` and `ios/` directories are intentionally ignored until the team decides to maintain native projects in source control.
 
+For QR scanning, add `NSCameraUsageDescription` to the iOS application `Info.plist`. On Android, verify camera permission in the generated manifest after running `npx cap sync`.
+
 ### API URLs on devices
 
 `NUXT_PUBLIC_API_BASE_URL` defaults to `http://localhost:8000`. A native app cannot normally reach the host computer using `localhost`.
@@ -153,3 +180,16 @@ Copy the example files before development:
 - `backend/.env.example` → `backend/.env`
 
 Never commit real API keys or secrets.
+
+## Backend tests
+
+```bash
+cd backend
+source .venv/bin/activate
+pip install -r requirements-dev.txt
+pytest
+```
+
+## Storage behavior
+
+History is local to the current device or browser profile. Native applications use SQLite and the web build uses local storage. Cloud login and multi-device synchronization are not enabled, so private review history is not uploaded to an application database.

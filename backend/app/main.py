@@ -2,10 +2,19 @@ import os
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+
+from app.routes.reviews import router as reviews_router
+
+
+load_dotenv()
 
 
 def get_allowed_origins() -> list[str]:
-    configured_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
+    configured_origins = os.getenv(
+        "ALLOWED_ORIGINS",
+        "http://localhost:3000,http://localhost,capacitor://localhost",
+    )
     return [origin.strip() for origin in configured_origins.split(",") if origin.strip()]
 
 
@@ -21,6 +30,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(reviews_router, prefix="/api/reviews")
 
 
 @app.get("/api/health", tags=["system"])
