@@ -82,6 +82,31 @@ For the interactive Cypress runner, use:
 npm run cypress:open
 ```
 
+## Docker
+
+Build and start the complete web stack:
+
+```bash
+cp .env.example .env
+docker compose up --build
+```
+
+Open the frontend at `http://localhost:3000`. The API remains available directly at `http://localhost:8000`, while Nginx also proxies frontend requests from `/api` to FastAPI inside the Docker network.
+
+Stop the stack with:
+
+```bash
+docker compose down
+```
+
+Run the containerized Cypress suite against the containerized application:
+
+```bash
+docker compose --profile e2e up --build --abort-on-container-exit --exit-code-from e2e
+```
+
+The web application, API, and E2E runner are containerized. Capacitor uses the generated web bundle, but native Android and iOS packaging remains a host-platform operation: Android requires the Android SDK, and iOS requires macOS with Xcode.
+
 ## Capacitor setup
 
 The project uses a client-rendered Nuxt build so the generated output can be bundled in a native WebView.

@@ -1,6 +1,6 @@
 describe('API health check', () => {
   it('shows that the FastAPI backend is connected', () => {
-    cy.intercept('GET', 'http://localhost:8000/api/health', {
+    cy.intercept('GET', '**/api/health', {
       statusCode: 200,
       body: {
         status: 'ok',
@@ -19,7 +19,7 @@ describe('API health check', () => {
   })
 
   it('lets the user retry after the backend is unavailable', () => {
-    cy.intercept('GET', 'http://localhost:8000/api/health', {
+    cy.intercept('GET', '**/api/health', {
       statusCode: 503,
       body: { detail: 'Service unavailable' },
     }).as('failedHealthCheck')
