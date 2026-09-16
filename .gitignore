@@ -37,3 +37,6 @@ frontend/ios/
 # Test output
 coverage/
 htmlcov/
+cypress/screenshots/
+cypress/videos/
+cypress/downloads/

@@ -26,18 +26,18 @@ const {
         The mobile-ready frontend checks whether the backend API is available.
       </p>
 
-      <div class="status" :class="`status--${status}`">
+      <div data-cy="api-status" class="status" :class="`status--${status}`">
         <span class="status__dot" aria-hidden="true" />
         <div>
           <strong v-if="status === 'pending'">Checking API…</strong>
-          <strong v-else-if="health">Backend connected</strong>
-          <strong v-else>Backend unavailable</strong>
+          <strong v-else-if="health" data-cy="api-status-message">Backend connected</strong>
+          <strong v-else data-cy="api-status-message">Backend unavailable</strong>
           <p v-if="health">{{ health.service }} returned “{{ health.status }}”.</p>
           <p v-else-if="error">Start FastAPI on port 8000 and try again.</p>
         </div>
       </div>
 
-      <button type="button" :disabled="status === 'pending'" @click="refresh">
+      <button data-cy="check-api" type="button" :disabled="status === 'pending'" @click="refresh">
         Check again
       </button>
     </section>

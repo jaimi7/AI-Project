@@ -58,6 +58,30 @@ cd ../frontend
 npm run build
 ```
 
+## End-to-end tests
+
+Cypress covers the frontend health-check flow with successful and unavailable API responses.
+
+Start the Nuxt application:
+
+```bash
+cd frontend
+npm run dev
+```
+
+Then run Cypress in another terminal:
+
+```bash
+cd frontend
+npm run test:e2e
+```
+
+For the interactive Cypress runner, use:
+
+```bash
+npm run cypress:open
+```
+
 ## Capacitor setup
 
 The project uses a client-rendered Nuxt build so the generated output can be bundled in a native WebView.

@@ -8,6 +8,9 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "test:e2e": "cypress run",
     "cap:sync": "npm run generate && cap sync",
     "cap:add:android": "cap add android",
     "cap:add:ios": "cap add ios",
@@ -25,6 +28,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^8.5.2",
+    "cypress": "^16.1.0",
     "typescript": "^5.9.0"
   }
 }
